@@ -1,0 +1,9 @@
+﻿  main.cpp
+C:\Users\annie\OneDrive\桌面\fourth\CG\OpenGL-SolarSystem\main.cpp(1,1): warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
+  The contents of <filesystem> are available only with C++17 or later.
+C:\Users\annie\OneDrive\桌面\fourth\CG\OpenGL-SolarSystem\main.cpp(47,22): warning C4244: '=': 將 'LONG' 轉換為 'float'，由於類型不同，可能導致資料遺失
+C:\Users\annie\OneDrive\桌面\fourth\CG\OpenGL-SolarSystem\main.cpp(48,20): warning C4244: '=': 將 'LONG' 轉換為 'float'，由於類型不同，可能導致資料遺失
+C:\Users\annie\OneDrive\桌面\fourth\CG\OpenGL-SolarSystem\main.cpp(229,54): warning C4244: '引數': 將 'float' 轉換為 'int'，由於類型不同，可能導致資料遺失
+C:\Users\annie\OneDrive\桌面\fourth\CG\OpenGL-SolarSystem\main.cpp(229,40): warning C4244: '引數': 將 'float' 轉換為 'int'，由於類型不同，可能導致資料遺失
+C:\Users\annie\OneDrive\桌面\fourth\CG\OpenGL-SolarSystem\main.cpp(303,24): warning C4838: 從 'FT_Pos' 到 'GLuint' 的轉換必須是縮小轉換
+  DiamondEngine.vcxproj -> C:\Users\annie\OneDrive\桌面\fourth\CG\OpenGL-SolarSystem\Debug\DiamondEngine.exe
