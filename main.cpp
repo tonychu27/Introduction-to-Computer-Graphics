@@ -22,9 +22,11 @@
 #include <ctime>
 #include <filesystem>
 #include <string>
+#include <cstdlib>
+#include <ctime>
 #define _USE_MATH_DEFINES
 #include <math.h>
-
+using namespace std;
 #define TAU (M_PI * 2.0)
 
 
@@ -484,6 +486,7 @@ int main() {
 	unsigned int texture_earth_clouds = loadTexture("resources/planets/2k_earth_clouds.jpg");
 	unsigned int texture_comet = loadTexture("resources/planets/comet4k.jpg");//add
 	unsigned int particleTexture = loadTexture("resources/planets/CometLight.jpg");
+	unsigned int texture_rock = loadTexture("resources/planets/Rock.jpg");
 
 	/* LOAD TEXTURES */
 
@@ -499,7 +502,26 @@ int main() {
 	Sphere Neptune(30.0f, 36, 19);
 	Sphere Moon(5.5f, 36, 18);
 	Sphere Comet(6.0f, 36, 18);
+	Sphere Rock(6.0f, 36, 18);
+	const int numRocks = 200;
+	Sphere Rocks[numRocks];
 	/* SPHERE GENERATION */
+
+	glm::vec3 rockPositions[numRocks];
+
+	for (int i = 0; i < numRocks; i++) {
+		float circle1Radius = 100.0f * 8.0f * 1.3f;
+		float circle2Radius = 100.0f * 9.0f * 1.3f;
+
+		float randomRadius = circle2Radius + (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * (circle1Radius - circle2Radius);
+
+		float randomAngle = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * 2.0f * M_PI;
+
+		float randomX = randomRadius * cos(randomAngle);
+		float randomZ = randomRadius * sin(randomAngle);
+
+		rockPositions[i] = glm::vec3(randomX, 0.0f, randomZ);
+	}
 
 	std::vector<std::string> faces
 	{
@@ -824,6 +846,28 @@ int main() {
 		SimpleShader.setMat4("model", modelorb);
 		glDrawArrays(GL_LINE_LOOP, 0, (GLsizei)orbVert.size() / 3);
 		/* ORBITS */
+
+		/*** Rocks ***/
+		for (int i = 0; i < numRocks; i++) {
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, texture_rock);
+
+			// Calculate oscillation factor for vertical movement
+			float oscillation = sin(glfwGetTime() + i) * 10.0f;
+			
+			// Apply the oscillation to the Y-position of the rock
+			glm::vec3 rockPositionWithOscillation = rockPositions[i] + glm::vec3(0.0f, oscillation, 0.0f);
+
+			glm::mat4 model_rocks = glm::mat4(1.0f);
+			model_rocks = glm::rotate(model_rocks, glm::radians(SceneRotateY), glm::vec3(1.0f, 0.0f, 0.0f));
+			model_rocks = glm::rotate(model_rocks, glm::radians(SceneRotateX), glm::vec3(0.0f, 0.0f, 1.0f));
+
+			model_rocks = glm::translate(model_rocks, rockPositionWithOscillation); // Use updated position
+
+			SimpleShader.setMat4("model", model_rocks);
+			Rocks[i].Draw();
+		}
+		/*** Rocks ***/
 
 		/* SATURN RINGS */
 		glActiveTexture(GL_TEXTURE0);
