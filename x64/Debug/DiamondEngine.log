@@ -1,1 +1,16 @@
-﻿  DiamondEngine.vcxproj -> C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\DiamondEngine.exe
+﻿  LINK : 最後的累加連結找不到或未建置 C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\DiamondEngine.exe，正在執行完整連結
+glfw3.lib(context.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(context.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(init.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(init.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(input.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(input.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(monitor.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(monitor.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(vulkan.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(vulkan.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(window.obj) : warning LNK4099: 找不到 PDB '' (有 'glfw3.lib(window.obj)' 或位於 '')，當做沒有偵錯資訊，連結物件
+glfw3.lib(win32_init.obj) : warning LNK4099: 找不到 PDB '' (有 'glfw3.lib(win32_init.obj)' 或位於 '')，當做沒有偵錯資訊，連結物件
+glfw3.lib(win32_joystick.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(win32_joystick.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(win32_monitor.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(win32_monitor.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(win32_time.obj) : warning LNK4099: 找不到 PDB '' (有 'glfw3.lib(win32_time.obj)' 或位於 '')，當做沒有偵錯資訊，連結物件
+glfw3.lib(win32_tls.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(win32_tls.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(win32_window.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(win32_window.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(wgl_context.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(wgl_context.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(egl_context.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(egl_context.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+  DiamondEngine.vcxproj -> C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\DiamondEngine.exe
