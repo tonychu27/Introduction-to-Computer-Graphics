@@ -163,22 +163,41 @@ struct Particle {
 
 
 std::vector<Particle> particles;
-const int maxParticles = 1000;
+const int maxParticles = 20000;
 
 void emitParticles(glm::vec3 cometPos) {
-    for (int i = 0; i < 20; ++i) { // 增加發射量
+    const float radius = 20.0f; // 彗星的半徑範圍
+    for (int i = 0; i < 50; ++i) { // 發射20個粒子
         Particle p;
-        p.position = cometPos;
+        
+        // 隨機生成粒子的位置
+        float offsetX = ((rand() % 200 - 100) / 100.0f) * radius; // -20 到 20
+        float offsetY = ((rand() % 200 - 100) / 100.0f) * radius; // -20 到 20
+        float offsetZ = ((rand() % 200 - 100) / 100.0f) * radius; // -20 到 20
+
+        // 確保粒子位置在球體內（利用半徑公式 x^2 + y^2 + z^2 <= r^2）
+        glm::vec3 offset(offsetX, offsetY, offsetZ);
+        while (glm::length(offset) > radius) { // 如果偏移量超過半徑，重新生成
+            offsetX = ((rand() % 200 - 100) / 100.0f) * radius;
+            offsetY = ((rand() % 200 - 100) / 100.0f) * radius;
+            offsetZ = ((rand() % 200 - 100) / 100.0f) * radius;
+            offset = glm::vec3(offsetX, offsetY, offsetZ);
+        }
+
+        // 設置粒子屬性
+        p.position = cometPos + offset; // 粒子位置偏移
         p.velocity = glm::vec3(
             (rand() % 100 - 50) / 300.0f, // 隨機擴散速度
             (rand() % 100 - 50) / 300.0f, 
-            -0.1f); // 固定向後
+            -0.1f); // 固定向後的速度
         p.color = glm::vec4(0.5f, 0.7f, 1.0f, 1.0f); // 藍色帶透明
         p.size = 0.1f; // 初始大小
-        p.lifetime = 1.5f;
+        p.lifetime = 2.5f; // 壽命1.5秒
+
         particles.push_back(p);
     }
 }
+
 
 
 void updateParticles(float deltaTime) {
@@ -207,7 +226,7 @@ void renderParticles(Shader &particleShader, Sphere &comet, unsigned int particl
     for (const auto &p : particles) {
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, p.position);
-        model = glm::scale(model, glm::vec3(0.05f)); // 粒子大小
+        model = glm::scale(model, glm::vec3(0.01f)); // particle粒子大小
 
         particleShader.setMat4("model", model);
         comet.Draw(); // 使用現有的小球渲染
@@ -501,7 +520,7 @@ int main() {
 	Sphere Uranus(30.0f, 36, 18);
 	Sphere Neptune(30.0f, 36, 19);
 	Sphere Moon(5.5f, 36, 18);
-	Sphere Comet(6.0f, 36, 18);
+	Sphere Comet(20.0f, 36, 18);
 	Sphere Rock(6.0f, 36, 18);
 	const int numRocks = 200;
 	Sphere Rocks[numRocks];

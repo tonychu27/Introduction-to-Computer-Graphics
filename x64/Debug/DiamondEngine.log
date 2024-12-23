@@ -1,24 +1,12 @@
 ﻿  main.cpp
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(1,1): warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
   The contents of <filesystem> are available only with C++17 or later.
-C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(49,22): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
-C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(50,20): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
-C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(231,54): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(231,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(305,24): warning C4838: conversion from 'FT_Pos' to 'GLuint' requires a narrowing conversion
-C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(518,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(856,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-glfw3.lib(context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(context.obj)' or at 'C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\glfw.pdb'; linking object as if no debug info
-glfw3.lib(init.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(init.obj)' or at 'C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\glfw.pdb'; linking object as if no debug info
-glfw3.lib(input.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(input.obj)' or at 'C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\glfw.pdb'; linking object as if no debug info
-glfw3.lib(monitor.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(monitor.obj)' or at 'C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\glfw.pdb'; linking object as if no debug info
-glfw3.lib(vulkan.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(vulkan.obj)' or at 'C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\glfw.pdb'; linking object as if no debug info
-glfw3.lib(window.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(window.obj)' or at 'C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\glfw.pdb'; linking object as if no debug info
-glfw3.lib(win32_init.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(win32_init.obj)' or at ''; linking object as if no debug info
-glfw3.lib(win32_joystick.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_joystick.obj)' or at 'C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\glfw.pdb'; linking object as if no debug info
-glfw3.lib(win32_monitor.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(win32_monitor.obj)' or at ''; linking object as if no debug info
-glfw3.lib(win32_time.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_time.obj)' or at 'C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\glfw.pdb'; linking object as if no debug info
-glfw3.lib(win32_tls.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_tls.obj)' or at 'C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\glfw.pdb'; linking object as if no debug info
-glfw3.lib(win32_window.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_window.obj)' or at 'C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\glfw.pdb'; linking object as if no debug info
-glfw3.lib(wgl_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(wgl_context.obj)' or at 'C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\glfw.pdb'; linking object as if no debug info
-glfw3.lib(egl_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(egl_context.obj)' or at 'C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\glfw.pdb'; linking object as if no debug info
-  DiamondEngine.vcxproj -> C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\DiamondEngine.exe
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(49,22): warning C4244: '=': 將 'LONG' 轉換為 'float'，由於類型不同，可能導致資料遺失
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(50,20): warning C4244: '=': 將 'LONG' 轉換為 'float'，由於類型不同，可能導致資料遺失
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(250,54): warning C4244: '引數': 將 'float' 轉換為 'int'，由於類型不同，可能導致資料遺失
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(250,40): warning C4244: '引數': 將 'float' 轉換為 'int'，由於類型不同，可能導致資料遺失
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(324,24): warning C4838: 從 'FT_Pos' 到 'GLuint' 的轉換必須是縮小轉換
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(537,21): warning C4244: '正在初始化': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(801,1): warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(875,22): warning C4244: '正在初始化': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+  DiamondEngine.vcxproj -> C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\DiamondEngine.exe
