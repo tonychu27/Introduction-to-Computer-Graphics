@@ -33,7 +33,7 @@ using namespace std;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 void RenderText(Shader &s, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
-unsigned int loadTexture(char const * path);
+unsigned int loadTexture(char const * path, bool isNormalMap);
 unsigned int loadCubemap(std::vector<std::string> faces);
 // void ShowInfo(Shader &s);
 void GetDesktopResolution(float& horizontal, float& vertical)
@@ -391,6 +391,7 @@ int main() {
 	Shader texShader("simpleVS.vs", "texFS.fs");
 	Shader TextShader("TextShader.vs", "TextShader.fs");
 	Shader particleShader("particle.vs", "particle.fs");
+	Shader rockShader("rockVS.vs", "rockFS.fs");
 	/* SHADERS */
 
 	// PROJECTION FOR TEXT RENDER
@@ -545,22 +546,23 @@ int main() {
 	/*COMET LIGHT TEX*/
 
 	/* LOAD TEXTURES */
-	unsigned int texture_earth = loadTexture("resources/planets/earth2k.jpg");
-	unsigned int t_sun = loadTexture("resources/planets/2k_sun.jpg");
-	unsigned int texture_moon = loadTexture("resources/planets/2k_moon.jpg");
-	unsigned int texture_mercury = loadTexture("resources/planets/2k_mercury.jpg");
-	unsigned int texture_venus = loadTexture("resources/planets/2k_mercury.jpg");
-	unsigned int texture_mars = loadTexture("resources/planets/2k_mars.jpg");
-	unsigned int texture_jupiter = loadTexture("resources/planets/2k_jupiter.jpg");
-	unsigned int texture_saturn = loadTexture("resources/planets/2k_saturn.jpg");
-	unsigned int texture_uranus = loadTexture("resources/planets/2k_uranus.jpg");
-	unsigned int texture_neptune = loadTexture("resources/planets/2k_neptune.jpg");
-	unsigned int texture_saturn_ring = loadTexture("resources/planets/r.jpg");
-	unsigned int texture_earth_clouds = loadTexture("resources/planets/2k_earth_clouds.jpg");
-	unsigned int texture_comet = loadTexture("resources/planets/comet4k.jpg");//add
-	unsigned int particleTexture = loadTexture("resources/planets/CometLight.jpg");
-	unsigned int texture_rock = loadTexture("resources/planets/Rock.jpg");
-	unsigned int haloTexture = loadTexture("resources/halo.jpg");
+	unsigned int texture_earth = loadTexture("resources/planets/earth2k.jpg", false);
+	unsigned int t_sun = loadTexture("resources/planets/2k_sun.jpg", false);
+	unsigned int texture_moon = loadTexture("resources/planets/2k_moon.jpg", false);
+	unsigned int texture_mercury = loadTexture("resources/planets/2k_mercury.jpg", false);
+	unsigned int texture_venus = loadTexture("resources/planets/2k_mercury.jpg", false);
+	unsigned int texture_mars = loadTexture("resources/planets/2k_mars.jpg", false);
+	unsigned int texture_jupiter = loadTexture("resources/planets/2k_jupiter.jpg", false);
+	unsigned int texture_saturn = loadTexture("resources/planets/2k_saturn.jpg", false);
+	unsigned int texture_uranus = loadTexture("resources/planets/2k_uranus.jpg", false);
+	unsigned int texture_neptune = loadTexture("resources/planets/2k_neptune.jpg", false);
+	unsigned int texture_saturn_ring = loadTexture("resources/planets/r.jpg", false);
+	unsigned int texture_earth_clouds = loadTexture("resources/planets/2k_earth_clouds.jpg", false);
+	unsigned int texture_comet = loadTexture("resources/planets/comet4k.jpg", false);//add
+	unsigned int particleTexture = loadTexture("resources/planets/CometLight.jpg", false);
+	unsigned int texture_rock = loadTexture("resources/planets/Rock.jpg", false);
+	unsigned int normalMap = loadTexture("resources/planets/Rock.jpg", true);
+	unsigned int haloTexture = loadTexture("resources/halo.jpg", false);
 
 	/* LOAD TEXTURES */
 
@@ -584,7 +586,7 @@ int main() {
 	glm::vec3 rockPositions[numRocks];
 
 	for (int i = 0; i < numRocks; i++) {
-		float circle1Radius = 100.0f * 8.0f * 1.3f;
+		float circle1Radius = 100.0f * 4.0f * 1.3f;
 		float circle2Radius = 100.0f * 9.0f * 1.3f;
 
 		float randomRadius = circle2Radius + (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * (circle1Radius - circle2Radius);
@@ -891,7 +893,7 @@ int main() {
 		Comet.Draw();
 		emitParticles(glm::vec3(xx, 0.0f, zz));
         updateParticles(deltaTime);
-         renderParticles(particleShader, haloTexture, SimpleShader, Comet);
+        renderParticles(particleShader, haloTexture, SimpleShader, Comet);
 		/*COMET */
 
 		glActiveTexture(GL_TEXTURE0);
@@ -922,23 +924,31 @@ int main() {
 		/* ORBITS */
 
 		/*** Rocks ***/
+		rockShader.Use();
 		for (int i = 0; i < numRocks; i++) {
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, texture_rock);
 
-			// Calculate oscillation factor for vertical movement
 			float oscillation = sin(glfwGetTime() + i) * 10.0f;
 			
-			// Apply the oscillation to the Y-position of the rock
 			glm::vec3 rockPositionWithOscillation = rockPositions[i] + glm::vec3(0.0f, oscillation, 0.0f);
 
 			glm::mat4 model_rocks = glm::mat4(1.0f);
 			model_rocks = glm::rotate(model_rocks, glm::radians(SceneRotateY), glm::vec3(1.0f, 0.0f, 0.0f));
 			model_rocks = glm::rotate(model_rocks, glm::radians(SceneRotateX), glm::vec3(0.0f, 0.0f, 1.0f));
 
-			model_rocks = glm::translate(model_rocks, rockPositionWithOscillation); // Use updated position
+			model_rocks = glm::translate(model_rocks, rockPositionWithOscillation);
 
-			SimpleShader.setMat4("model", model_rocks);
+			rockShader.setMat4("model", model_rocks);
+			rockShader.setMat4("view", view);
+			rockShader.setMat4("projection", projection);
+			
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, texture_rock);
+			rockShader.setInt("texture_rock", 0);
+
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, normalMap);
+			rockShader.setInt("normalMap", 1);
+
 			Rocks[i].Draw();
 		}
 		/*** Rocks ***/
@@ -1247,7 +1257,7 @@ unsigned int loadCubemap(std::vector<std::string> faces)
 	return textureID;
 }
 
-unsigned int loadTexture(char const * path)
+unsigned int loadTexture(char const * path, bool isNormalMap)
 {
 	unsigned int textureID;
 	glGenTextures(1, &textureID);
@@ -1257,13 +1267,19 @@ unsigned int loadTexture(char const * path)
 	if (data)
 	{
 		GLenum format;
-		if (nrComponents == 1)
-			format = GL_RED;
-		else if (nrComponents == 3)
+		if(isNormalMap) {
 			format = GL_RGB;
-		else if (nrComponents == 4)
-			format = GL_RGBA;
+		}
+		else {
+			if (nrComponents == 1)
+				format = GL_RED;
+			else if (nrComponents == 3)
+				format = GL_RGB;
+			else if (nrComponents == 4)
+				format = GL_RGBA;
 
+		}
+		
 		glBindTexture(GL_TEXTURE_2D, textureID);
 		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
