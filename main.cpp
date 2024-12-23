@@ -35,7 +35,7 @@ void processInput(GLFWwindow *window);
 void RenderText(Shader &s, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
 unsigned int loadTexture(char const * path);
 unsigned int loadCubemap(std::vector<std::string> faces);
-void ShowInfo(Shader &s);
+// void ShowInfo(Shader &s);
 void GetDesktopResolution(float& horizontal, float& vertical)
 {
 	RECT desktop;
@@ -192,7 +192,14 @@ void emitParticles(glm::vec3 cometPos) {
             -0.1f); // 固定向後的速度
         p.color = glm::vec4(0.5f, 0.7f, 1.0f, 1.0f); // 藍色帶透明
         p.size = 0.1f; // 初始大小
-        p.lifetime = 2.5f; // 壽命1.5秒
+        int randomValue = rand() % 10; // 生成 0-9 的隨機數
+        if (randomValue < 7) {
+            p.lifetime = 2.5f; // 70% 的粒子壽命 2.5 秒
+        } else if (randomValue < 9) {
+            p.lifetime = 2.0f; // 20% 的粒子壽命 2.0 秒
+        } else {
+            p.lifetime = 1.5f; // 10% 的粒子壽命 1.5 秒
+        }
 
         particles.push_back(p);
     }
@@ -215,23 +222,64 @@ void updateParticles(float deltaTime) {
     }
 }
 
+unsigned int particleVAO, particleVBO;
 
-void renderParticles(Shader &particleShader, Sphere &comet, unsigned int particleTexture) {
+void initParticleVAO() {
+    glGenVertexArrays(1, &particleVAO);
+    glGenBuffers(1, &particleVBO);
+
+    glBindVertexArray(particleVAO);
+
+    // 綁定 VBO 並加載粒子數據（初始為空，稍後更新）
+    glBindBuffer(GL_ARRAY_BUFFER, particleVBO);
+    glBufferData(GL_ARRAY_BUFFER, particles.size() * sizeof(Particle), nullptr, GL_DYNAMIC_DRAW);
+
+    // 假設 Particle 結構包含 position、color、size 等屬性：
+    // 1. 粒子位置屬性
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // 2. 粒子顏色屬性
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, color));
+    glEnableVertexAttribArray(1);
+
+    // 3. 粒子大小屬性
+    glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, size));
+    glEnableVertexAttribArray(2);
+
+    glBindVertexArray(0); // 解綁 VAO
+}
+
+
+void renderParticles(Shader &particleShader, unsigned int particleTexture, Shader &SimpleShader, Sphere &comet) {
+    // 1. 渲染粒子光暈
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-    particleShader.Use();
-    glBindTexture(GL_TEXTURE_2D, particleTexture);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
+    particleShader.Use();
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, particleTexture);
+    particleShader.setInt("particleTexture", 0);
+
+    glBindVertexArray(particleVAO);
+    glDrawArrays(GL_POINTS, 0, particles.size());
+    glBindVertexArray(0);
+
+    glDisable(GL_BLEND);
+
+    // 2. 渲染小球
+    SimpleShader.Use();
+    SimpleShader.setVec3("color", glm::vec3(1.0f, 0.5f, 0.2f)); // 設置小球顏色
     for (const auto &p : particles) {
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, p.position);
-        model = glm::scale(model, glm::vec3(0.01f)); // particle粒子大小
+        model = glm::scale(model, glm::vec3(0.01f)); // 小球大小
 
-        particleShader.setMat4("model", model);
-        comet.Draw(); // 使用現有的小球渲染
+        SimpleShader.setMat4("model", model);
+        comet.Draw(); // 渲染小球
     }
 }
+
 
 
 int main() {
@@ -342,6 +390,7 @@ int main() {
 	Shader SkyboxShader("skybox.vs", "skybox.fs");
 	Shader texShader("simpleVS.vs", "texFS.fs");
 	Shader TextShader("TextShader.vs", "TextShader.fs");
+	Shader particleShader("particle.vs", "particle.fs");
 	/* SHADERS */
 
 	// PROJECTION FOR TEXT RENDER
@@ -490,6 +539,11 @@ int main() {
 	glBindVertexArray(0);
 	/* TEXT RENDERING VAO-VBO*/
 
+	/*COMET LIGHT TEX*/
+	glEnable(GL_PROGRAM_POINT_SIZE);
+	glEnable(GL_POINT_SPRITE);
+	/*COMET LIGHT TEX*/
+
 	/* LOAD TEXTURES */
 	unsigned int texture_earth = loadTexture("resources/planets/earth2k.jpg");
 	unsigned int t_sun = loadTexture("resources/planets/2k_sun.jpg");
@@ -506,6 +560,7 @@ int main() {
 	unsigned int texture_comet = loadTexture("resources/planets/comet4k.jpg");//add
 	unsigned int particleTexture = loadTexture("resources/planets/CometLight.jpg");
 	unsigned int texture_rock = loadTexture("resources/planets/Rock.jpg");
+	unsigned int haloTexture = loadTexture("resources/halo.jpg");
 
 	/* LOAD TEXTURES */
 
@@ -836,7 +891,7 @@ int main() {
 		Comet.Draw();
 		emitParticles(glm::vec3(xx, 0.0f, zz));
         updateParticles(deltaTime);
-        renderParticles(SimpleShader, Comet, particleTexture);
+         renderParticles(particleShader, haloTexture, SimpleShader, Comet);
 		/*COMET */
 
 		glActiveTexture(GL_TEXTURE0);
@@ -941,7 +996,7 @@ int main() {
 			viewZ = cos(glfwGetTime() * PlanetSpeed) * 100.0f *3.5f * 1.3f;
 			viewPos = glm::vec3(viewX, 50.0f, viewZ);
 			view = glm::lookAt(viewPos, PlanetsPositions[0], glm::vec3(0.0f, 1.0f, 0.0f));
-			ShowInfo(TextShader);
+			// ShowInfo(TextShader);
 			break;
 
 		case 2:
@@ -949,7 +1004,7 @@ int main() {
 			viewZ = cos(glfwGetTime() * PlanetSpeed * 0.75f) * 100.0f *4.5f * 1.2f;
 			viewPos = glm::vec3(viewX, 50.0f, viewZ);
 			view = glm::lookAt(viewPos, PlanetsPositions[1], glm::vec3(0.0f, 1.0f, 0.0f));
-			ShowInfo(TextShader);
+			// ShowInfo(TextShader);
 			break;
 
 		case 3:
@@ -957,7 +1012,7 @@ int main() {
 			viewZ = cos(glfwGetTime() * PlanetSpeed * 0.55f) * 100.0f *5.5f * 1.2f;
 			viewPos = glm::vec3(viewX, 50.0f, viewZ);
 			view = glm::lookAt(viewPos, PlanetsPositions[2], glm::vec3(0.0f, 1.0f, 0.0f));
-			ShowInfo(TextShader);
+			// ShowInfo(TextShader);
 			break;
 
 		case 4:
@@ -965,7 +1020,7 @@ int main() {
 			viewZ = cos(glfwGetTime() * PlanetSpeed * 0.35f) * 100.0f *6.0f * 1.2f;
 			viewPos = glm::vec3(viewX, 20.0f, viewZ);
 			view = glm::lookAt(viewPos, PlanetsPositions[3], glm::vec3(0.0f, 1.0f, 0.0f));
-			ShowInfo(TextShader);
+			// ShowInfo(TextShader);
 			break;
 
 		case 5:
@@ -973,7 +1028,7 @@ int main() {
 			viewZ = cos(glfwGetTime() * PlanetSpeed * 0.2f) * 100.0f *7.5f * 1.3f;
 			viewPos = glm::vec3(viewX, 50.0f, viewZ);
 			view = glm::lookAt(viewPos, PlanetsPositions[4], glm::vec3(0.0f, 1.0f, 0.0f));
-			ShowInfo(TextShader);
+			// //ShowInfo(TextShader);(TextShader);
 			break;
 
 		case 6:
@@ -981,7 +1036,7 @@ int main() {
 			viewZ = cos(glfwGetTime() * PlanetSpeed * 0.15f) * 100.0f *8.5f * 1.3f;
 			viewPos = glm::vec3(viewX, 50.0f, viewZ);
 			view = glm::lookAt(viewPos, PlanetsPositions[5], glm::vec3(0.0f, 1.0f, 0.0f));
-			ShowInfo(TextShader);
+			//ShowInfo(TextShader);(TextShader);
 			break;
 
 		case 7:
@@ -989,7 +1044,7 @@ int main() {
 			viewZ = cos(glfwGetTime() * PlanetSpeed * 0.1f) * 100.0f *9.5f * 1.3f;
 			viewPos = glm::vec3(viewX, 50.0f, viewZ);
 			view = glm::lookAt(viewPos, PlanetsPositions[6], glm::vec3(0.0f, 1.0f, 0.0f));
-			ShowInfo(TextShader);
+			//ShowInfo(TextShader);(TextShader);
 			break;
 
 		case 8:
@@ -997,26 +1052,26 @@ int main() {
 			viewZ = cos(glfwGetTime() * PlanetSpeed * 0.08f) * 100.0f *10.5f * 1.3f;
 			viewPos = glm::vec3(viewX, 50.0f, viewZ);
 			view = glm::lookAt(viewPos, PlanetsPositions[7], glm::vec3(0.0f, 1.0f, 0.0f));
-			ShowInfo(TextShader);
+			//ShowInfo(TextShader);(TextShader);
 			break;
 
 		case 0:
 			view = camera.GetViewMatrix();
 
-			RenderText(TextShader, "SOLAR SYSTEM ", 25.0f, SCREEN_HEIGHT - 30.0f, 0.50f, glm::vec3(0.7f, 0.7f, 0.11f));
-			RenderText(TextShader, "STARS: 1 (SUN) ", 25.0f, SCREEN_HEIGHT - 55.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
-			RenderText(TextShader, "PLANETS: 8 (MAYBE 9) ", 25.0f, SCREEN_HEIGHT - 80.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
-			RenderText(TextShader, "SATELLITES: 415 ", 25.0f, SCREEN_HEIGHT - 105.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
-			RenderText(TextShader, "COMMETS: 3441 ", 25.0f, SCREEN_HEIGHT - 130.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
+			(TextShader, "SOLAR SYSTEM ", 25.0f, SCREEN_HEIGHT - 30.0f, 0.50f, glm::vec3(0.7f, 0.7f, 0.11f));
+			// RenderText(TextShader, "STARS: 1 (SUN) ", 25.0f, SCREEN_HEIGHT - 55.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
+			// RenderText(TextShader, "PLANETS: 8 (MAYBE 9) ", 25.0f, SCREEN_HEIGHT - 80.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
+			// RenderText(TextShader, "SATELLITES: 415 ", 25.0f, SCREEN_HEIGHT - 105.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
+			// RenderText(TextShader, "COMMETS: 3441 ", 25.0f, SCREEN_HEIGHT - 130.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
 
-			if (camera.FreeCam)
-				RenderText(TextShader, "FREE CAM ", SCREEN_WIDTH - 200.0f, SCREEN_HEIGHT - 30.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
-			if (onFreeCam)
-				RenderText(TextShader, "STATIC CAM ", SCREEN_WIDTH - 200.0f, SCREEN_HEIGHT - 30.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
+			// if (camera.FreeCam)
+			// 	RenderText(TextShader, "FREE CAM ", SCREEN_WIDTH - 200.0f, SCREEN_HEIGHT - 30.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
+			// if (onFreeCam)
+			// 	RenderText(TextShader, "STATIC CAM ", SCREEN_WIDTH - 200.0f, SCREEN_HEIGHT - 30.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
 			break;
 		}
-		if (PlanetView > 0)
-			RenderText(TextShader, "PLANET CAM ", SCREEN_WIDTH - 200.0f, SCREEN_HEIGHT - 30.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
+		// if (PlanetView > 0)
+			// RenderText(TextShader, "PLANET CAM ", SCREEN_WIDTH - 200.0f, SCREEN_HEIGHT - 30.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
 		/* PLANET TRACKING + SHOW INFO OF PLANET */
 
 
@@ -1026,7 +1081,7 @@ int main() {
 		glfwPollEvents();
 	}
 
-	glDeleteVertexArrays(1, &VAO_t);
+	//glDeleteVerteRenderTextxArrays(1, &VAO_t);
 	glDeleteBuffers(1, &VBO_t);
 	glfwTerminate();
 	return 0;
@@ -1272,10 +1327,10 @@ void RenderText(Shader &s, std::string text, GLfloat x, GLfloat y, GLfloat scale
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void ShowInfo(Shader &s)
-{
-	RenderText(s, "Planet: " + Info.Name, 25.0f, SCREEN_HEIGHT - 30.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
-	RenderText(s, "Avarage Orbital Speed (km/s): " + Info.OrbitSpeed, 25.0f, SCREEN_HEIGHT - 50.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
-	RenderText(s, "Mass (kg * 10^24): " + Info.Mass, 25.0f, SCREEN_HEIGHT - 70.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
-	RenderText(s, "Gravity (g): " + Info.Gravity, 25.0f, SCREEN_HEIGHT - 90.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
-}
+// void ShowInfo(Shader &s)
+// {
+// 	RenderText(s, "Planet: " + Info.Name, 25.0f, SCREEN_HEIGHT - 30.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
+// 	RenderText(s, "Avarage Orbital Speed (km/s): " + Info.OrbitSpeed, 25.0f, SCREEN_HEIGHT - 50.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
+// 	RenderText(s, "Mass (kg * 10^24): " + Info.Mass, 25.0f, SCREEN_HEIGHT - 70.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
+// 	RenderText(s, "Gravity (g): " + Info.Gravity, 25.0f, SCREEN_HEIGHT - 90.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
+// }
