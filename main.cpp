@@ -187,8 +187,8 @@ void emitParticles(glm::vec3 cometPos) {
         // 設置粒子屬性
         p.position = cometPos + offset; // 粒子位置偏移
         p.velocity = glm::vec3(
-            (rand() % 100 - 50) / 300.0f, // 隨機擴散速度
-            (rand() % 100 - 50) / 300.0f, 
+            (rand() % 100 - 50) / 200.0f, // 隨機擴散速度
+            (rand() % 100 - 50) / 200.0f, 
             -0.1f); // 固定向後的速度
         p.color = glm::vec4(0.5f, 0.7f, 1.0f, 1.0f); // 藍色帶透明
         p.size = 0.1f; // 初始大小
@@ -557,7 +557,7 @@ int main() {
 	unsigned int texture_neptune = loadTexture("resources/planets/2k_neptune.jpg");
 	unsigned int texture_saturn_ring = loadTexture("resources/planets/r.jpg");
 	unsigned int texture_earth_clouds = loadTexture("resources/planets/2k_earth_clouds.jpg");
-	unsigned int texture_comet = loadTexture("resources/planets/comet4k.jpg");//add
+	unsigned int texture_comet = loadTexture("resources/ugly.jpg");//add
 	unsigned int particleTexture = loadTexture("resources/planets/CometLight.jpg");
 	unsigned int texture_rock = loadTexture("resources/planets/Rock.jpg");
 	unsigned int haloTexture = loadTexture("resources/halo.jpg");
@@ -879,7 +879,7 @@ int main() {
 
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture_mercury);
+		glBindTexture(GL_TEXTURE_2D, texture_comet);
 		model_comet = glm::translate(model_comet, point);
 		model_comet = glm::rotate(model_comet, glm::radians(SceneRotateY), glm::vec3(1.0f, 0.0f, 0.0f));
 		model_comet = glm::rotate(model_comet, glm::radians(SceneRotateX), glm::vec3(0.0f, 0.0f, 1.0f));
