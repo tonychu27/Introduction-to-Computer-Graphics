@@ -558,7 +558,7 @@ int main() {
 	unsigned int texture_neptune = loadTexture("resources/planets/2k_neptune.jpg", false);
 	unsigned int texture_saturn_ring = loadTexture("resources/planets/r.jpg", false);
 	unsigned int texture_earth_clouds = loadTexture("resources/planets/2k_earth_clouds.jpg", false);
-	unsigned int texture_comet = loadTexture("resources/planets/comet4k.jpg", false);//add
+	unsigned int texture_comet = loadTexture("resources/ugly.jpg", false);//add
 	unsigned int particleTexture = loadTexture("resources/planets/CometLight.jpg", false);
 	unsigned int texture_rock = loadTexture("resources/planets/Rock.jpg", false);
 	unsigned int normalMap = loadTexture("resources/planets/Rock.jpg", true);
@@ -867,6 +867,7 @@ int main() {
 		/* NEPTUNE */
 
 		/*COMET */
+		/* COMET */
 		glm::mat4 model_comet;
 		double a = 300.0f; // 長軸
 		double b = 150.0f; // 短軸
@@ -876,24 +877,36 @@ int main() {
 		double eccentricity = 0.8; // 偏心率
 		double r = (a * (1 - eccentricity * eccentricity)) / (1 + eccentricity * cos(t)); // 極坐標公式
 
-		xx = r * cos(t); // X 軸位置
-		zz = r * sin(t); // Z 軸位置
+		glm::vec3 orbit_offset = glm::vec3(100.0f, 0.0f, -100.0f); // 自訂偏移量
 
+		// 計算彗星的位置
+		xx = r * cos(t) + orbit_offset.x; // X 軸位置，加上偏移量
+		zz = r * sin(t) ; // Z 軸位置，加上偏移量
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture_comet);
-		model_comet = glm::translate(model_comet, point);
-		model_comet = glm::rotate(model_comet, glm::radians(SceneRotateY), glm::vec3(1.0f, 0.0f, 0.0f));
+
+		// 設置彗星模型的變換
+		model_comet = glm::translate(model_comet, point); // 如果有全域偏移點，先應用
+		model_comet = glm::translate(model_comet, glm::vec3(xx, 0.0f, zz)); // 移動到正確位置
+
+		model_comet = glm::rotate(model_comet, glm::radians(SceneRotateY), glm::vec3(1.0f, 0.0f, 0.0f)); // 應用旋轉
 		model_comet = glm::rotate(model_comet, glm::radians(SceneRotateX), glm::vec3(0.0f, 0.0f, 1.0f));
-		model_comet = glm::translate(model_comet, glm::vec3(xx, 0.0f, zz));
-		PlanetsPositions[0] = glm::vec3(xx, 0.0f, zz);
-		model_comet = glm::rotate(model_comet, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.f));
-		model_comet = glm::rotate(model_comet, (GLfloat)glfwGetTime() * glm::radians(-90.0f) * 0.05f, glm::vec3(0.0f, 0.0f, 1.f));
+
+		model_comet = glm::rotate(model_comet, glm::radians(-76.0f), glm::vec3(1.0f, 0.0f, 0.f)); // 其他旋轉
+		model_comet = glm::rotate(model_comet, (GLfloat)glfwGetTime() * glm::radians(-76.0f) * 0.05f, glm::vec3(0.0f, 0.0f, 1.f));
+
+		// 將模型變換矩陣傳遞到著色器
 		SimpleShader.setMat4("model", model_comet);
-		Comet.Draw();
-		emitParticles(glm::vec3(xx, 0.0f, zz));
-        updateParticles(deltaTime);
-        renderParticles(particleShader, haloTexture, SimpleShader, Comet);
+
+// 繪製彗星
+	Comet.Draw();
+
+	// 粒子系統的更新和渲染
+	emitParticles(glm::vec3(xx, 0.0f, zz));
+	updateParticles(deltaTime);
+	renderParticles(particleShader, haloTexture, SimpleShader, Comet);
+
 		/*COMET */
 
 		glActiveTexture(GL_TEXTURE0);
