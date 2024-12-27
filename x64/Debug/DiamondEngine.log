@@ -1,5 +1,7 @@
 ﻿  main.cpp
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(1,1): warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
   The contents of <filesystem> are available only with C++17 or later.
+<<<<<<< HEAD
 C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(49,22): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
 C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(50,20): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
 C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(265,48): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
@@ -23,3 +25,29 @@ glfw3.lib(win32_window.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with
 glfw3.lib(wgl_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(wgl_context.obj)' or at 'C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\glfw.pdb'; linking object as if no debug info
 glfw3.lib(egl_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(egl_context.obj)' or at 'C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\glfw.pdb'; linking object as if no debug info
   DiamondEngine.vcxproj -> C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\DiamondEngine.exe
+=======
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(49,22): warning C4244: '=': 將 'LONG' 轉換為 'float'，由於類型不同，可能導致資料遺失
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(50,20): warning C4244: '=': 將 'LONG' 轉換為 'float'，由於類型不同，可能導致資料遺失
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(265,48): warning C4267: '引數': 將 'size_t' 轉換為 'GLsizei'，資料可能遺失
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(298,54): warning C4244: '引數': 將 'float' 轉換為 'int'，由於類型不同，可能導致資料遺失
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(298,40): warning C4244: '引數': 將 'float' 轉換為 'int'，由於類型不同，可能導致資料遺失
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(372,24): warning C4838: 從 'FT_Pos' 到 'GLuint' 的轉換必須是縮小轉換
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(594,21): warning C4244: '正在初始化': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(820,1): warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
+C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\main.cpp(943,22): warning C4244: '正在初始化': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+glfw3.lib(context.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(context.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(init.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(init.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(input.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(input.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(monitor.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(monitor.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(vulkan.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(vulkan.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(window.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(window.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(win32_init.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(win32_init.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(win32_joystick.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(win32_joystick.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(win32_monitor.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(win32_monitor.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(win32_time.obj) : warning LNK4099: 找不到 PDB '' (有 'glfw3.lib(win32_time.obj)' 或位於 '')，當做沒有偵錯資訊，連結物件
+glfw3.lib(win32_tls.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(win32_tls.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(win32_window.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(win32_window.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(wgl_context.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(wgl_context.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+glfw3.lib(egl_context.obj) : warning LNK4099: 找不到 PDB 'glfw.pdb' (有 'glfw3.lib(egl_context.obj)' 或位於 'C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\glfw.pdb')，當做沒有偵錯資訊，連結物件
+  DiamondEngine.vcxproj -> C:\Users\annie\OneDrive\桌面\fourth\CG\CG_final\x64\Debug\DiamondEngine.exe
+>>>>>>> 599d6ec957dd4b8ee70165a162afd673d7cfdb20
