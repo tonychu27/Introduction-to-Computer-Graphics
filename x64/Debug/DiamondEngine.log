@@ -3,12 +3,11 @@
 C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(49,22): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
 C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(50,20): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
 C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(265,48): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(298,54): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(298,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(372,24): warning C4838: conversion from 'FT_Pos' to 'GLuint' requires a narrowing conversion
-C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(594,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(930,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(988,28): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(382,54): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(382,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(456,24): warning C4838: conversion from 'FT_Pos' to 'GLuint' requires a narrowing conversion
+C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(734,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\main.cpp(1103,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 glfw3.lib(context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(context.obj)' or at 'C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\glfw.pdb'; linking object as if no debug info
 glfw3.lib(init.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(init.obj)' or at 'C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\glfw.pdb'; linking object as if no debug info
 glfw3.lib(input.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(input.obj)' or at 'C:\Users\tony2\OneDrive\Desktop\Computer-Graphics-Final\x64\Debug\glfw.pdb'; linking object as if no debug info
