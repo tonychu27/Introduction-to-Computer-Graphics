@@ -280,6 +280,90 @@ void renderParticles(Shader &particleShader, unsigned int particleTexture, Shade
     }
 }
 
+void fromObjectFile(vector<float>& position, vector<float>& normal, vector<float>& texcoord, const char* obj_file) {
+  ifstream ObjFile(obj_file);
+
+  if (!ObjFile.is_open()) {
+    cout << "Can't open File !" << endl;
+    return;
+  }
+
+  string line;
+  string prefix;
+  stringstream ss;
+
+  vector<glm::vec3> positions;
+  vector<glm::vec3> normals;
+  vector<glm::vec2> textures;
+
+  glm::vec2 tempVec2;
+  glm::vec3 tempVec3;
+
+  /*** Add a dummy element since the index starts from 1 ***/
+  positions.push_back(tempVec3);
+  normals.push_back(tempVec3);
+  textures.push_back(tempVec2);
+
+  GLint lint = 0;
+
+  while (getline(ObjFile, line)) {
+    ss.clear();
+    ss.str(line);
+    ss >> prefix;
+
+    /*** If it is position ***/
+    if (prefix == "v") {
+      ss >> tempVec3.x >> tempVec3.y >> tempVec3.z;
+      positions.push_back(tempVec3);
+    }
+    /*** If it is normal ***/
+    else if (prefix == "vn") {
+      ss >> tempVec3.x >> tempVec3.y >> tempVec3.z;
+      normals.push_back(tempVec3);
+    }
+    /*** If it is texture ***/
+    else if (prefix == "vt") {
+      ss >> tempVec2.x >> tempVec2.y;
+      textures.push_back(tempVec2);
+    }
+    else if (prefix == "f") {
+      int cnt = 0;
+
+      while (ss >> lint) {
+        if (cnt == 0) {
+          position.push_back(positions[lint].x);
+          position.push_back(positions[lint].y);
+          position.push_back(positions[lint].z);
+        }
+        else if (cnt == 1) {
+          texcoord.push_back(textures[lint].x);
+          texcoord.push_back(textures[lint].y);
+        }
+        else if (cnt == 2) {
+          normal.push_back(normals[lint].x);
+          normal.push_back(normals[lint].y);
+          normal.push_back(normals[lint].z);
+        }
+
+        /*** Bypass if the next character is '/' or ' ' ***/
+        if (ss.peek() == '/') {
+          cnt++;
+          ss.ignore(1, '/');
+        } 
+        else if (ss.peek() == ' ') {
+          cnt++;
+          ss.ignore(1, ' ');
+        }
+
+        cnt %= 3;
+      }
+    }
+  }
+
+  if (ObjFile.is_open()) ObjFile.close();
+
+}
+
 
 
 int main() {
@@ -497,6 +581,62 @@ int main() {
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	/* SKYBOX GENERATION */
+
+	/*** Rocket Generation ***/
+	vector<float> rocket_position, rocket_normal, rocket_texcoord;
+	fromObjectFile(rocket_position, rocket_normal, rocket_texcoord, "models/rocket.obj");
+	unsigned int texture_rocket = loadTexture("resources/planets/steel.jpg", false);
+
+	GLuint rocketVAO;
+	glGenVertexArrays(1, &rocketVAO);
+	glBindVertexArray(rocketVAO);
+
+	GLuint rocketVBO[3];
+	glGenBuffers(3, rocketVBO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, rocketVBO[0]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * rocket_position.size(), rocket_position.data(), GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, rocketVBO[1]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * rocket_normal.size(), rocket_normal.data(), GL_STATIC_DRAW);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, rocketVBO[2]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * rocket_texcoord.size(), rocket_texcoord.data(), GL_STATIC_DRAW);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+	/*** Rocket Generation ***/
+
+	/*** UFO Generation ***/
+	vector<float> ufo_position, ufo_normal, ufo_texcoord;
+	fromObjectFile(ufo_position, ufo_normal, ufo_texcoord, "models/ufo.obj");
+	unsigned int texture_ufo = loadTexture("resources/planets/steel2.jpg", false);
+
+	GLuint ufoVAO;
+	glGenVertexArrays(1, &ufoVAO);
+	glBindVertexArray(ufoVAO);
+
+	GLuint ufoVBO[3];
+	glGenBuffers(3, ufoVBO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, ufoVBO[0]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * ufo_position.size(), ufo_position.data(), GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, ufoVBO[1]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * ufo_normal.size(), ufo_normal.data(), GL_STATIC_DRAW);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, ufoVBO[2]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * ufo_texcoord.size(), ufo_texcoord.data(), GL_STATIC_DRAW);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+	/*** UFO Generation ***/
 
 	/* VERTEX GENERATION FOR ORBITS */
 	std::vector<float> orbVert;
@@ -935,6 +1075,39 @@ int main() {
 		SimpleShader.setMat4("model", modelorb);
 		glDrawArrays(GL_LINE_LOOP, 0, (GLsizei)orbVert.size() / 3);
 		/* ORBITS */
+
+		/*** Rockets ***/
+		xx = sin(glfwGetTime() * PlanetSpeed * 0.08f) * 100.0f * 4.5f * 1.3f;
+		zz = cos(glfwGetTime() * PlanetSpeed * 0.08f) * 100.0f * 4.5f * 1.3f;
+		glBindVertexArray(rocketVAO);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture_rocket);
+		glm::mat4 modelRocket = glm::mat4(1);
+		modelRocket = glm::translate(modelRocket, point);
+		modelRocket = glm::translate(modelRocket, glm::vec3(xx, 0.0f, zz));
+		modelRocket = glm::rotate(modelRocket, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelRocket = glm::scale(modelRocket, glm::vec3(1.0f, -1.0f, 1.0f));
+		modelRocket = glm::scale(modelRocket, glm::vec3(0.3f, 0.3f, 0.3f));
+		SimpleShader.setMat4("model", modelRocket);
+		glDrawArrays(GL_TRIANGLES, 0, (GLsizei)rocket_position.size() / 3);
+		/*** Rockets ***/
+
+		/*** UFO ***/
+		xx = sin(glfwGetTime() * PlanetSpeed * 2.08f) * 100.0f * 1.5f * 1.3f;
+		zz = cos(glfwGetTime() * PlanetSpeed * 2.08f) * 100.0f * 1.5f * 1.3f;
+		glBindVertexArray(ufoVAO);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture_ufo);
+		glm::mat4 model_ufo = glm::mat4(1);
+		model_ufo = glm::translate(model_ufo, point);
+		model_ufo = glm::translate(model_ufo, glm::vec3(xx, 0.0f, zz));
+		model_ufo = glm::rotate(model_ufo, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model_ufo = glm::scale(model_ufo, glm::vec3(1.0f, -1.0f, 1.0f));
+		model_ufo = glm::scale(model_ufo, glm::vec3(0.3f, 0.3f, 0.3f));
+		model_ufo = glm::rotate(model_ufo, (GLfloat)glfwGetTime() * glm::radians(-99.0f) * 0.5f, glm::vec3(0.0f, 1.0f, 0.0f));
+		SimpleShader.setMat4("model", model_ufo);
+		glDrawArrays(GL_TRIANGLES, 0, (GLsizei)ufo_position.size() / 3);
+		/*** UFO ***/
 
 		/*** Rocks ***/
 		rockShader.Use();
