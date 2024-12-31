@@ -1,7 +1,7 @@
 > [!CAUTION]
 > Don't copy my work or you will be caught for plagiarism 🙅‍♂️⛔️
 # Introduction to Computer Graphics
-2024 Fall NYCU 
+2024 Fall NYCU, Wen-Chieh Lin
 
 ## Grading Policy
 * HW1: 25%
